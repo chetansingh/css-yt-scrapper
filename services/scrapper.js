@@ -15,7 +15,7 @@ const run = (semanticURL) => (
         try {
             let results = {};
             const pageURL = scrappingInfo.youTube.baseUrl.URL + semanticURL
-            const browser = await puppeteer.launch();
+            const browser = await puppeteer.launch({args: ['--no-sandbox', '--disable-setuid-sandbox']});
             const page = await browser.newPage();
 
             await page.setViewport({ width: 1280, height: 800 });
@@ -42,11 +42,14 @@ const run = (semanticURL) => (
                 return window.ytInitialData;
             });
 
-            const allChannelPagesData = parseVideoContent(ytInitialData).map(async (data, i) => {
-                const pageURL = scrappingInfo.youTube.baseUrl.URL + data.video.url;
+            let responseData = [];
+            let allData = parseVideoContent(ytInitialData);
+            
+            for (const data of allData) {
+                let pageURL = scrappingInfo.youTube.baseUrl.URL + data.video.url;
+                
                 try {
-                    const browser = await puppeteer.launch();
-                    const page = await browser.newPage();
+                    let page = await browser.newPage();
                     await page.setViewport({ width: 1280, height: 800 });
                     await page.setRequestInterception(true);
                     page.on('request', (request) => {
@@ -56,11 +59,11 @@ const run = (semanticURL) => (
                             request.abort();
                         }
                     });
+                    
                     console.log(`loading page: ${pageURL}`);
                     console.log("Sleep to avoid blocking from youtube");
                     //TODO : Use proxy server instead of sleep to avoid blocking
-                    await sleep(5000);
-                    console.warn("Use proxy server instead of sleep");
+                    await sleep(100);
                     await page.goto(pageURL, {
                         waitUntil: 'load',
                         timeout: 120000,
@@ -73,20 +76,14 @@ const run = (semanticURL) => (
                     });
 
                     data.additionalData = ytInitialData;
+                    responseData.push(data);
                     await page.close();
                 } catch (e) {
-                    return reject(e);
+                    console.error(e);
                 }
-                browser.close();
-                return data;
-            });
-
-            Promise.all(allChannelPagesData).then((obj) => {
-                resolve(obj)
-                browser.close();
-            }).catch((e) => {
-                console.log(e);
-            });
+            }
+            browser.close();
+            resolve(responseData);
         } catch (e) {
             return reject(e);
         }
