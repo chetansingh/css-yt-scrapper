@@ -1,0 +1,15 @@
+version : "3.3"
+services:
+  app:
+    container_name: css-yt-scrapper
+    restart: always
+    build: .
+    ports:
+      - "8080:3401"
+    links:
+      - "mongo"
+  mongo:
+    container_name: mongo
+    image: mongo       
+    ports:
+      - "27018:27017"

@@ -45,19 +45,19 @@ $ docker --version
 
 This will print the docker version in the terminal.
 
-### Build Image of the NodeJS application from the project root directory
+### Run the following command in the same project directory for building.
 
-Run below command to create a Docker image of the node application:
+First install "docker-compose" if not installed by sudo apt install docker-compose 
 
-$ docker build -t node-app .
+$ docker-compose build
 
-## Run below command to run your app inside a docker container
+### Run below command to run your app inside a docker container
 
-$ docker run -p 8081:3401 -d node-app
+$ docker-compose up
 
 - Open the below URL in brower to see your Node js application is running
 
-  http://localhost:8081 
+  http://localhost:8080
 
 
 
