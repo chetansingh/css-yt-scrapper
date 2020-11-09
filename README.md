@@ -15,13 +15,15 @@ This application will provides APIs to scrap youtube's trending video from (http
 
 ## Requirements
 
-For development, you will only need Node.js and a node global package, npm, and mongo installed in your environement.
+For development, you will need Node.js, node package manager (npm), and mongo installed in your environement.
 
 ## Installation
 
- $ git clone https://github.com/YOUR_USERNAME/PROJECT_TITLE
- $ cd PROJECT_TITLE
- $ npm install
+ - $ git clone https://github.com/chetansingh/css-yt-scrapper.git
+
+ - $ cd css-yt-scrapper
+
+ - $ npm install
 
 ## Usage
 
@@ -29,10 +31,10 @@ After installation you need to run the following command inside you project root
 
 $ node app.js
 
-# Dockerization of this project
+# Dockerization of this project (Linux)
 
 ## Prerequisites:
-- nodejs and npm:
+- nodejs, npm and docker should be installed on your machine 
 
 ## Docker
 - To install Docker, follow the instructions mentioned in:
@@ -55,10 +57,6 @@ $ docker-compose build
 
 $ docker-compose up
 
-- Open the below URL in brower to see your Node js application is running
+- Open the below URL in brower to see your Node js application is running on port 3401
 
-  http://localhost:8080
-
-
-
-
+  http://localhost:3401

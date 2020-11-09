@@ -23,19 +23,22 @@ rootRouter.get('/', (req, res) => {
 });
 
 //connecting mongodb
-MongoClient.connect(process.env.DB_HOST || mongoConfig.url, { useUnifiedTopology: true })
+const options = {
+  useUnifiedTopology : true
+}
+MongoClient.connect(process.env.DB_HOST || mongoConfig.url, options)
   .then(client => {
     console.log('Connected to Database')
     const db = client.db(mongoConfig.db);
-    
     // mounting apis
     apisController(router,db);
     app.use('/scrapper/v1/', router);
     app.use('/', rootRouter);
-
-  })
+  }).catch(err=>{
+    console.log('MongoDB connection unsuccessful',err);
+  });
 
 // Start the server
 app.listen(PORT, function () {
-  console.log("App listening on port " + PORT);
+  console.log("App listening on port " + process.env.DB_HOST);
 });
